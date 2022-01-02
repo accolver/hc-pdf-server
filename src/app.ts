@@ -1,11 +1,13 @@
 import fastify, { FastifyInstance } from 'fastify'
 import formBody from 'fastify-formbody'
 import bearerAuthPlugin from 'fastify-bearer-auth'
+import cors from 'fastify-cors'
 import { Page } from 'puppeteer'
 import { hcPages } from '@uyamazak/fastify-hc-pages'
 import { hcPDFOptionsPlugin } from './plugins/pdf-options'
 import { AppConfig, GetQuerystring, PostBody } from './types/hc-pdf-server'
 import {
+  ALLOWED_CORS_ORIGINS,
   DEFAULT_PRESET_PDF_OPTIONS_NAME,
   BEARER_AUTH_SECRET_KEY,
   PAGES_NUM,
@@ -89,6 +91,21 @@ export const app = async (
       emulateMediaTypeScreenEnabled,
       acceptLanguage,
       viewport,
+    },
+  })
+
+  server.register(cors, {
+    origin: (origin, cb) => {
+      if (
+        ALLOWED_CORS_ORIGINS.includes('*') ||
+        ALLOWED_CORS_ORIGINS.includes(origin)
+      ) {
+        cb(null, true)
+        return
+      }
+
+      cb(new Error('Not allowed'), false)
+      return
     },
   })
 

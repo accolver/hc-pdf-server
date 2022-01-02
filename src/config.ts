@@ -56,6 +56,8 @@ export const ACCEPT_LANGUAGE = process.env.HCPDF_ACCEPT_LANGUAGE ?? undefined
  */
 export const SERVER_ADDRESS = process.env.HCPDF_SERVER_ADDRESS ?? '127.0.0.1'
 export const SERVER_PORT = toNumber(process.env.HCPDF_SERVER_PORT) ?? 8080
+// Comma-separated string
+export const ALLOWED_CORS_ORIGINS = process.env.HCPDF_ALLOWED_CORS_ORIGINS?.split(',') ?? []
 // 10MiB
 export const FASTIFY_BODY_LIMIT = toNumber(
   process.env.HCPDF_FASTIFY_BODY_LIMIT ?? '10485760'
